@@ -10,7 +10,8 @@ import static webClient.IWebClient.logger;
 public class App {
     public static void main(String[] args) {
         LLM llm = new LLM();
-        String prompt = "베이스의 매력이 무엇인지 설명해주고 그걸 잘 나타낸 음악 1곡 추천(queen 제외). no markdown, nutshell. 추천곡엔 강조표시";
+//        String prompt = "";
+        String prompt = System.getenv("LLM_PROMPT");
 
         logger.setLevel(Level.SEVERE);
         String result = llm.call_LLM(GEMINI_2_0_FLASH, """
@@ -32,7 +33,8 @@ public class App {
         logger.info(result);
 
         // 이미지 생성
-        String imagePrompt = "generate a suitable image based on %s exclude people. non-people".formatted(result);
+        String template = System.getenv("LLM_IMAGE_PROMPT");
+        String imagePrompt = template.formatted(result);
 //        String imageResult = llm.call_LLM(STABLE_DIFFUSION_XL_BASE_1_0, """
         String imageResult = llm.call_LLM(FLUX_1_SCHNELL_FREE, """
                 {
@@ -49,7 +51,8 @@ public class App {
         logger.info(imageResult);
 
         Slack slack = new Slack();
-        String title = "베이스의 매력을 모르는 당신!!";
+//        String title = "###";
+        String title = System.getenv("SLACK_WEBHOOK_TITLE");
         slack.sendMessage(title, result, imageResult);
     }
 }
