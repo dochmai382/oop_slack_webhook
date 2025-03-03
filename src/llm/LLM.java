@@ -9,7 +9,7 @@ public class LLM extends WebClient implements ILLM {
     @Override
     public String call_LLM(LLM_Model model, String body) {
         String path = "";
-        HttpMethod method = HttpMethod.GET;
+        HttpMethod method = null;
         Map<String, String> headers = new HashMap<>();
         String updatedBody = body;
         switch (model.provider) {
@@ -33,7 +33,7 @@ public class LLM extends WebClient implements ILLM {
                 updatedBody = body.replace("modelName", model.name);
             }
         }
-        logger.info(path);
+//        logger.info(path);
         logger.info(updatedBody);
         String result = "";
         try {

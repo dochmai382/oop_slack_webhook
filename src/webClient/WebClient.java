@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 public class WebClient implements IWebClient{
-    HttpClient httpClient = HttpClient.newHttpClient();
+    protected HttpClient httpClient = HttpClient.newHttpClient();
 
     @Override
     public String send(HttpRequest request) throws IOException, InterruptedException {
@@ -24,6 +24,7 @@ public class WebClient implements IWebClient{
                 .uri(URI.create(url))
                 .method(type.type, HttpRequest.BodyPublishers.ofString(body));
         headers.forEach(builder :: header);
+
         return builder.build();
     }
 }
