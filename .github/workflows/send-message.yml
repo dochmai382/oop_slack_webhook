@@ -1,0 +1,32 @@
+name: send message
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # 매일 한국 시각 오전 9시 (UTC 자정)에 실행
+
+jobs:
+  send-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Compile and Run Bot
+        run: |
+          javac App.java
+          java App
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TITLE: ${{ vars.SLACK_WEBHOOK_TITLE }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          TOGETHER_AI_API_KEY: ${{ secrets.TOGETHER_AI_API_KEY }}
+          LLM_PROMPT: ${{ vars.LLM_PROMPT }}
+          LLM_IMAGE_PROMPT: ${{ vars.LLM_IMAGE_PROMPT  }}
