@@ -20,7 +20,7 @@ jobs:
 
       - name: Compile and Run Bot
         run: |
-          javac src/App.java
+          javac src/**/*.java
           java -cp src App
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
